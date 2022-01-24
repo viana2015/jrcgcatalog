@@ -1,47 +1,45 @@
 package com.jrcg.jrcglearn.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.Instant;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Data
-@AllArgsConstructor()
+@AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "tb_course")
-public class Course implements Serializable {
+@Table(name = "tb_notification")
+public class Notification implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
-	
+
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@Column(columnDefinition = "TEXT")
+	private String text;
 	
-	private String name;
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+	private Instant moment;
+	private boolean read;
+	private String route;
 	
-	private String imgUri;
-	
-	private String imgGrayUri;
-	
-	
-	@Setter(value = AccessLevel.NONE)
-	@OneToMany(mappedBy = "course")
-	private List<Offer>offers = new ArrayList<>();
-	
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
 }
